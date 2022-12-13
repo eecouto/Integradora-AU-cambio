@@ -1,0 +1,39 @@
+{% extends 'base/basepanel.html' %}
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+      <h2 style="text-align: center">Editar Empleado {{ session['clinica'] }}</h2>
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row register-form">
+                                <div class="col-md-8 offset-md-2">
+                                    <form class="custom-form" action="/editar_empleados/{{ datos.6 }}" method="POST" >
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" >Nombre(s) </label></div>
+                                            <div class="col-sm-6 input-column"><input  value="{{ datos.0 }}" class="form-control" name="nombre" type="text" placeholder="Ingresa tu nombre(s)" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Apellidos</label></div>
+                                            <div class="col-sm-6 input-column"><input value="{{ datos.1 }}" class="form-control" name="apellidos" type="text" placeholder="Ingresa tus apellidos" required=""></div></div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Correo</label></div>
+                                            <div class="col-sm-6 input-column"><input value="{{ datos.2 }}" class="form-control" name="correo" type="email" inputmode="email" required="" placeholder="Ingresa el correo"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Teléfono</label></div>
+                                            <div class="col-sm-6 input-column"><input value="{{ datos.3 }}" class="form-control" name="telefono" type="tel" inputmode="numeric" required="" placeholder="Ingresa el teléfono"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" >Estatus</label></div>
+                                            <div class="col-sm-6 input-column"><input  value="{{ datos.5 }}" class="form-control" name="estatus" type="text" placeholder="Ingresa el Estatus" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Contraseña</label></div>
+                                            <div class="col-sm-6 input-column"><input value="{{ datos.4 }}" class="form-control" name="password" type="password" required="" placeholder="Ingresa la contraseña" minlength="8" maxlength="25"></div>
+                                        </div><center><button class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);" data-bs-target=".hyml" name="id_empleado" value="{{ datos.6 }}" >Actualizar</button></center>
+                                    </form>
+                                </div>
+                            </div>
+{% endblock %}

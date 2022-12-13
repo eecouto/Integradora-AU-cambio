@@ -1,0 +1,176 @@
+{% extends 'base/basepanel.html' %}
+
+{% block content %}
+
+
+
+<br>
+<br>
+<div class="container">
+
+      {% if session['rol'] == "Administrador" %}
+      <h2 style="text-align: center">Citas</h2>
+      {% endif %}
+
+      {% if session['rol'] != "Administrador" %}
+      <h2 style="text-align: center">Citas {{ session['clinica'] }}</h2>
+      {% endif %}
+
+  <div class="container">
+<form action="/buscar_cita" method="POST">
+  <select class="form-select"   id="formulario" name="filtro">
+    <optgroup label="--Filtro de busqueda--" >
+      <option value="Ninguno" selected >Ninguno</option>
+      <option value="medico" >Medico</option>
+      <option value="estatus" >Estatus</option>
+  </select> <h1></h1>
+  <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Buscar " name="buscar" method="POST"><h1></h1> <button class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Buscar <i class="fas "></i></button> <a href="/citas"   class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Reiniciar busqueda <i class="fas"></i></a>
+</form>
+</div>
+  <br>
+
+
+<table class="table table-hover table-dark table-condensed ">
+  <thead>
+    <tr>
+      <th scope="col">Folio</th>
+      {% if session['rol'] == "Administrador" %}
+      <th scope="col">Clinica</th>
+      {% endif %}
+      <th scope="col">Nombre</th>
+      <th scope="col">Teléfono</th>
+      <th scope="col">Consultorio</th>
+      <th scope="col">Doctor</th>
+      <th scope="col">Servicio</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Estatus</th>
+      <th scope="col">Costo</th>
+      <th scope="col">Pago</th>
+      <th scope="col">Restante</th>
+      {% if session['rol'] != "Administrador" %}
+      <th scope="col">Modificar</th>
+      <th scope="col">Cancelar</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for fila in datos %}
+    {% if (fila.3," ",fila.4)==(session['Nombre_empleado']," ",session['Apellidos_empleado']) and session['rol'] == "Medico" %}
+  <tr>
+      <td>{{ fila.0 }}</td>
+      <td>{{ fila.8 }} {{ fila.9 }}</td>
+      <td>{{ fila.10 }}</td>
+      <td>{{ fila.2 }}</td>
+      <td>{{ fila.3 }} {{ fila.4 }}</td>
+      <td>{{ fila.5 }}</td>
+      <td>{{ fila.6 }} {{fila.7 }}</td>
+      <td>{{ fila.13 }}</td>
+      <td>{{ fila.12 }}</td>
+      {% if fila.17 != 0 %}
+      <td>{{ fila.17 }}</td>
+        {% if fila.17>fila.12 or fila.17==fila.12 %}
+        <td>Pagado</td>
+        {% endif %}
+
+        {% if fila.17 < fila.12 %}
+        <td>{{ fila.12-fila.17 }}</td>
+        {% endif %}
+
+      {% endif %}
+      {% if fila.17 == 0 %}
+      <td>0</td>
+      <td>{{ fila.12 }}</td>
+      {% endif %}
+      <td><a href="/editar_cita/{{ fila.0 }}"><button type="button" class="btn btn-info">Editar</button></a></td>
+      {% if fila.13 == "Activo" %}
+      <td><a href="/cancelar_cita/{{ fila.0 }}"><button type="button" class="btn btn-danger">Cancelar</button></a></td>
+      {% endif %}
+      {% if fila.13 != "Activo"%}
+      <td><a ><button type="button" class="btn btn-danger" disabled>Cancelar</button></a></td>
+      {% endif %}
+    </tr>
+    {% endif %}
+
+  {% if session['rol'] != "Medico"%}
+    <tr>
+      <td>{{ fila.0 }}</td>
+
+      {% if session['rol'] == "Administrador" %}
+      <td> {{ fila.1 }}</td>
+      {% endif %}
+
+      <td>{{ fila.8 }} {{ fila.9 }}</td>
+      <td>{{ fila.10 }}</td>
+      <td>{{ fila.2 }}</td>
+      <td>{{ fila.3 }} {{ fila.4 }}</td>
+      <td>{{ fila.5 }}</td>
+      <td>{{ fila.6 }} {{fila.7 }}</td>
+      <td>{{ fila.13 }}</td>
+      <td>{{ fila.12 }}</td>
+      {% if fila.17 != 0 %}
+      <td>{{ fila.17 }}</td>
+        {% if fila.17>fila.12 or fila.17==fila.12 %}
+        <td>Pagado</td>
+        {% endif %}
+
+        {% if fila.17 < fila.12 %}
+        <td>{{ fila.12-fila.17 }}</td>
+        {% endif %}
+
+      {% endif %}
+      {% if fila.17 == 0 %}
+      <td>0</td>
+      <td>{{ fila.12 }}</td>
+      {% endif %}
+      {% if session['rol'] == "Asistente Administrativo" %}
+      <td><a href="/editar_cita/{{ fila.0 }}"><button type="button" class="btn btn-info">Editar</button></a></td>
+      {% endif %}
+      {% if fila.13 == "Activo" and session['rol'] == "Asistente Administrativo" %}
+      <td><a href="/cancelar_cita/{{ fila.0 }}"><button type="button" class="btn btn-danger">Cancelar</button></a></td>
+      {% endif %}
+      {% if fila.13 != "Activo" and session['rol'] == "Asistente Administrativo" %}
+      <td><a ><button type="button" class="btn btn-danger" disabled>Cancelar</button></a></td>
+      {% endif %}
+    </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+
+  <!-- Button trigger modal -->
+  {% if session['rol'] == "Asistente Administrativo" or session['rol'] == "Medico" %}
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Pagar
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/registrar_pago" class="custom-form" method="POST">
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Folio de la Cita</label></div>
+                                            <div class="col-sm-6 input-column"><input name="folio" class="form-control" type="text" placeholder="Ingresa El Folió" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Monto a Pagar</label></div>
+                                            <div class="col-sm-6 input-column"><input name="monto" class="form-control" type="text" placeholder="Ingresa El Monto" required=""></div>
+                                        </div>
+         <center><button type="submit" class="btn btn-primary">Envíar</button><center>
+                                    </form>
+      </div>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+  <br><br>
+</div>
+{% endif %}
+
+
+{% endblock %}

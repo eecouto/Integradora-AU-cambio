@@ -1,0 +1,50 @@
+{% extends 'base/basepanel.html' %}
+
+{% block content %}
+<br>
+<br>
+
+
+<div class="container">
+  <h2 style="text-align: center">Empleados {{ session['clinica'] }}</h2>
+
+  <div class="container">
+<form action="/buscar_empleado" method="POST">
+  <select class="form-select"   id="formulario" name="filtro">
+    <optgroup label="--Filtro de busqueda--" >
+      <option value="Ninguno" selected >Ninguno</option>
+      <option value="puesto" >Puesto </option>
+      <option value="estatus" >Estatus</option>
+  </select> <h1></h1>
+  <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Buscar " name="buscar" method="POST"><h1></h1> <button class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Buscar <i class="fas "></i></button> <a href="/empleados"   class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Reiniciar busqueda <i class="fas"></i></a>
+</form>
+</div>
+  <br>
+
+<table class="table table-hover table-dark table-condensed ">
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Télefono</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Puesto</th>
+      <th scope="col">Estatus</th>
+      <th scope="col">Modificar</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for fila in datos %}
+    <tr>
+      <td>{{ fila.0 }} {{fila.1}}</td>
+      <td>{{ fila.2 }}</td>
+      <td>{{ fila.4 }}</td>
+      <td>{{ fila.7 }}</td>
+      <td>{{ fila.3 }}</td>
+      <td><a href="/editar_empleados/{{ fila.8 }}"><button type="button" class="btn btn-info">Editar</button></a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

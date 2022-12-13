@@ -1,0 +1,86 @@
+{% extends 'base/basepanel.html' %}
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <h2 style="text-align: center">Registro Empleado {{ session['clinica'] }}</h2>
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row register-form">
+                                <div class="col-md-8 offset-md-2">
+                                    <form class="custom-form" action="/registrar_empleado" method="POST" >
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" >Nombre(s) </label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" name="nombre" type="text" placeholder="Ingresa tu nombre(s)" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Apellidos</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" name="apellidos" type="text" placeholder="Ingresa tus apellidos" required=""></div></div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Correo</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" name="correo" type="email" inputmode="email" required="" placeholder="Ingresa el correo"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Teléfono</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" name="telefono" type="tel" inputmode="numeric" required="" placeholder="Ingresa el teléfono"></div>
+                                        </div>
+                                        <div class="row form-group" >
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Rol</label></div>
+                                            <div class="col-sm-6 input-column" ><select required="" onchange="javascript:showContent()" id="puesto" class="form-select" name="rol">
+                                                <optgroup label="--Rol-">
+                                                        <option>Selecciona alguno...</option>
+                                                     {% for rol in roles %}
+                                                        <option name="rol" checked>{{rol.0}}</option>
+                                                    {% endfor %}
+                                                </optgroup>
+                                                </select></div>
+
+                                        </div>
+                                        <div class="row form-group" id="content2" style="display:none;">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Consultorio</label></div>
+                                    <div class="col-sm-6 input-column" id="Consultorio"><select class="form-select" id="formu">
+                                                {% for consultorio in consultorios %}
+                                                <option value="{{consultorio.1}}" >{{consultorio.1}}</option>
+                                                {% endfor %}
+
+                                        </select></div>
+
+                                        </div>
+                                    <br>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Contraseña</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" name="password" type="password" required="" placeholder="Ingresa la contraseña" minlength="8" maxlength="25"></div>
+                                        </div><center><button onclick="verificar()" class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);" data-bs-target=".hyml">Registrar</button></center>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                                function showContent() {
+                                    var variable= document.getElementById('puesto').value;
+                                    console.log(variable);
+
+                                    if (variable == "Medico") {
+                                        document.getElementById("content2").style.display="flex";
+                                        document.getElementById("formu").setAttribute("name","consultorio");
+                                }
+                                    if(variable != "Medico") {
+                                        document.getElementById("content2").style.display="none";
+                                        document.getElementById("formu").removeAttribute('name');
+                                    }
+                                }
+
+
+                                function verificar(){
+
+                                    var variable = document.getElementById('puesto').value;
+
+                                    if(variable == "Selecciona alguno..."){
+                                        alert("Debes Seleccionar Algun Puesto");
+                                        return false;
+                                    }
+                                }
+                        </script>
+
+{% endblock %}

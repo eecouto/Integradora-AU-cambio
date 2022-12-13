@@ -1,0 +1,73 @@
+{% extends 'base/basepanel.html' %}
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <h2 style="text-align: center">Agendar Cita {{ session['clinica'] }}</h2>
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row register-form">
+                                <div class="col-md-8 offset-md-2">
+                                    <form action="/registrar_cita" class="custom-form" method="POST">
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Nombre(s) </label></div>
+                                            <div class="col-sm-6 input-column"><input name="nombre" class="form-control" type="text" placeholder="Ingresa tu nombre(s)" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Apellidos</label></div>
+                                            <div class="col-sm-6 input-column"><input name="apellidos" class="form-control" type="text" placeholder="Ingresa tus apellidos" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Teléfono</label></div>
+                                            <div class="col-sm-6 input-column"><input name="telefono" class="form-control" type="tel" required="" placeholder="Ingresa tu télefono"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" >Fecha</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" name="fecha"  type="date" min="2021-08-01" id="fecha" max="2022-12-30" required/></div>
+
+                                        </div>
+
+                                        <div class="row form-group" id="contenido">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Hora</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" type="time" min="09:00" max="19:00" name="hora" required ></div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label">Servicio&nbsp;</label></div>
+                                            <div class="col-sm-6 input-column"><select id="servicio" class="form-select" name="servicio">
+                                                <optgroup label="--Servicio--">
+                                                    {% for fila in datos %}
+                                                        <option  name="servicio">{{fila.0}}</option>
+                                                    {% endfor %}
+                                                </select></div>
+                                        </div>
+
+
+
+                                       <center><button  class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Registrar</button></center>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</div>
+                        <script type="text/javascript">
+                        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+           dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+           mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("fecha").setAttribute("min", today);
+
+          </script>
+ {% endblock %}
